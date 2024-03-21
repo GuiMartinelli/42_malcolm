@@ -3,20 +3,20 @@ version: "3.7"
 services:
     alice:
         image: jlesage/firefox
-        container_name: mitm_alice
+        container_name: alice
         restart: always
         networks:
             - mitm
     bob:
         image: aikain/simplehttpserver:0.1
-        container_name: mitm_bob
+        container_name: bob
         restart: always
         networks:
             - mitm
     eve:
         privileged: true
         build: .
-        container_name: mitm_eve
+        container_name: malcolm
         sysctls:
             # Necessary for transparent mode for mitmproxy
             - net.ipv4.ip_forward=1
