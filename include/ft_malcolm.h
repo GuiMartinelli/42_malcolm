@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/02 15:02:25 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:38:03 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,13 @@ t_cli_args	*get_cli_args(char **argv);
 int cli_validator(int argc, char **argv);
 
 void	print_ip_n_mac(uint8_t *ip, uint8_t *mac);
+void	print_interface_info(char * interface);
+void	print_interface_error();
+void	print_cli_error();
+void	print_ip(uint8_t *ip);
+void	print_mac(uint8_t *mac);
+void	print_request_info(uint8_t *target_ip, uint8_t *source_ip);
+void	print_response_info(uint8_t *target_ip, uint8_t *source_ip);
 
 void	define_signal(void);
 

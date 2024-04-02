@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:20:08 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/02 15:02:04 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:09:52 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ char *find_available_interface(void) {
 	if_name = NULL;
 
 	if (getifaddrs(&ifaddr) == -1) {
-		perror("getifaddrs");
-		exit(EXIT_FAILURE);
+		printf("Error: Could not find interfaces\n");
+		return (NULL);
 	}
 
 	for (struct ifaddrs *ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
@@ -35,6 +35,8 @@ char *find_available_interface(void) {
 			break;
 		}
 	}
+
+	print_interface_info(if_name);
 	freeifaddrs(ifaddr);
 	return(if_name);
 }
