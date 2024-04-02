@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:11:24 by guferrei          #+#    #+#             */
-/*   Updated: 2024/03/26 15:30:02 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:42:15 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,57 +22,6 @@ int isValidInput(int argc, char **argv) {
 	// validate_mac(argv[4]);
 
 	return (TRUE);
-}
-
-uint8_t	*set_ip(char *input) {
-	uint8_t	*buf;
-	int		status;
-
-	buf = calloc(sizeof(struct in_addr), sizeof(struct in_addr));
-
-	status = inet_pton(AF_INET, input, buf);
-
-	if (status <= 0) {
-		free(buf);
-		return NULL;
-	}
-
-	return (buf);
-}
-
-int hex2num(char c)
-{
-	if (c >= '0' && c <= '9')
-		return c - '0';
-	if (c >= 'a' && c <= 'f')
-		return c - 'a' + 10;
-	if (c >= 'A' && c <= 'F')
-		return c - 'A' + 10;
-	return -1;
-}
-
-uint8_t	*set_mac(char *input) {
-	uint8_t	*buf;
-	int i;
-
-	buf = calloc(7 * sizeof(uint8_t), 7 * sizeof(uint8_t));
-	i = 0;
-
-	while (i < 6) {
-		int a;
-		int b;
-
-		a = hex2num(*input++);
-		b = hex2num(*input++);
-
-		if (a < 0 || b < 0 || (i < 5 && *input++ != ':'))
-			return NULL;
-
-		buf[i] = (a << 4) | b;
-		i++;
-	}
-
-	return buf;
 }
 
 uint8_t *allocate_ustrmem(int len) {
@@ -95,33 +44,6 @@ uint8_t *allocate_ustrmem(int len) {
 	}
 }
 
-char *findAvailableInterface(void) {
-	struct ifaddrs *ifaddr;
-	char *if_name;
-	char host[NI_MAXHOST];
-
-	if_name = NULL;
-
-	if (getifaddrs(&ifaddr) == -1) {
-		perror("getifaddrs");
-		exit(EXIT_FAILURE);
-	}
-
-	for (struct ifaddrs *ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
-		if (ifa->ifa_addr == NULL)
-			continue;
-
-		if ((ifa->ifa_addr->sa_family == AF_INET ||
-				ifa->ifa_addr->sa_family == AF_INET6) &&
-				!ft_strncmp("eth", ifa->ifa_name, 3)) {
-			if_name = ft_strdup(ifa->ifa_name);
-			break;
-		}
-	}
-	freeifaddrs(ifaddr);
-	return(if_name);
-}
-
 int	is_equal_address(uint8_t *ip_a, uint8_t *ip_b, int flag) {
 	int i;
 
@@ -134,10 +56,10 @@ int	is_equal_address(uint8_t *ip_a, uint8_t *ip_b, int flag) {
 	return TRUE;
 }
 
-struct arp_hdr	*recover_arp_request(struct cli_args *info) {
-	int sd;
-	uint8_t *ether_frame;
-	struct arp_hdr *arp_request;
+t_arp_hdr	*recover_arp_request(t_cli_args *info) {
+	int			sd;
+	uint8_t		*ether_frame;
+	t_arp_hdr	*arp_request;
 
 	ether_frame = allocate_ustrmem(IP_MAXPACKET);
 
@@ -147,7 +69,7 @@ struct arp_hdr	*recover_arp_request(struct cli_args *info) {
 		exit(1);
 	}
 
-	arp_request = (struct arp_hdr *) (ether_frame + 6 + 6 + 2);
+	arp_request = (t_arp_hdr *) (ether_frame + 6 + 6 + 2);
 	while (((((ether_frame[12]) << 8) + ether_frame[13]) != ETH_P_ARP) ||
 		(ntohs(arp_request->opcode) != ARPOP_REPLY)) {
 
@@ -186,12 +108,13 @@ void	print_ip_n_mac(uint8_t *ip, uint8_t *mac) {
 	}
 }
 
-int	sendArpRequest(struct arp_hdr *arp_request, char *interface, struct cli_args *info) {
-	int	sd, frame_length;
-	struct arp_packet *arp_response;
-	struct sockaddr_in *ipv4;
-	struct sockaddr_ll device;
-	uint8_t *ether_frame;
+int	sendArpRequest(t_arp_hdr *arp_request, char *interface, t_cli_args *info) {
+	int					sd;
+	int					frame_length;
+	t_arp_packet		*arp_response;
+	struct sockaddr_in	*ipv4;
+	struct sockaddr_ll	device;
+	uint8_t				*ether_frame;
 
 	memset(&device, 0, sizeof(device));
 	if ((device.sll_ifindex = if_nametoindex(interface)) == 0) {
@@ -203,7 +126,7 @@ int	sendArpRequest(struct arp_hdr *arp_request, char *interface, struct cli_args
 	memcpy(device.sll_addr, info->source_mac, 6 * sizeof(uint8_t));
 	device.sll_halen = 6;
 
-	arp_response = ft_calloc(1, sizeof(struct arp_packet));
+	arp_response = ft_calloc(1, sizeof(t_arp_packet));
 
 	ft_memcpy(arp_response->ether.dhost, arp_request->sender_mac, 6 * sizeof(uint8_t));
 	ft_memcpy(arp_response->ether.shost, info->source_mac, 6 * sizeof(uint8_t));
@@ -223,35 +146,19 @@ int	sendArpRequest(struct arp_hdr *arp_request, char *interface, struct cli_args
 		exit(EXIT_FAILURE);
 	}
 
-	if (sendto(sd, arp_response, sizeof(struct arp_packet), 0, (struct sockaddr *)&device, sizeof(device)) < 0) {
+	if (sendto(sd, arp_response, sizeof(t_arp_packet), 0, (struct sockaddr *)&device, sizeof(device)) < 0) {
 		perror("sendto() failed");
 		exit(EXIT_FAILURE);
 	}
 	close(sd);
 }
 
-struct cli_args	*get_cli_args(char **argv) {
-	struct cli_args	*input;
-
-	input->source_ip = set_ip(argv[1]);
-	input->source_mac = set_mac(argv[2]);
-	input->target_ip = set_ip(argv[3]);
-	input->target_mac = set_mac(argv[4]);
-
-	if (!input->source_ip || !input->source_mac ||
-			!input->target_ip || !input->target_mac) {
-		perror("get_cli_args");
-		exit(EXIT_FAILURE);
-	}
-
-	return input;
-}
-
 int main(int argc, char **argv) {
-	struct arp_hdr	*arp_request;
-	char 			*interface;
-	struct cli_args	*input;
+	t_arp_hdr	*arp_request;
+	char 		*interface;
+	t_cli_args	*input;
 
+	define_signal();
 
 	if (!isValidInput(argc, argv)) {
 		printf("INVALID INPUT\n");
