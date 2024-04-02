@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/02 14:29:18 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:02:25 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,15 @@ typedef struct s_arp_packet {
 } t_arp_packet;
 
 t_cli_args	*get_cli_args(char **argv);
+int cli_validator(int argc, char **argv);
+
+void	print_ip_n_mac(uint8_t *ip, uint8_t *mac);
 
 void	define_signal(void);
 
-char *findAvailableInterface(void);
+char *find_available_interface(void);
+
+t_arp_hdr	*recover_arp_request(t_cli_args *info);
+int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_cli_args *info);
 
 #endif

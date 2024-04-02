@@ -1,5 +1,5 @@
 all:
-	gcc -o ft_malcolm src/libft/*.c src/cli/cli.c src/interface/interface.c src/signal/signal.c src/ft_malcolm.c
+	gcc -o ft_malcolm src/libft/*.c src/cli/*.c src/interface/interface.c src/signal/signal.c src/network/*.c src/ft_malcolm.c
 
 clean:
 	rm -f ft_malcolm

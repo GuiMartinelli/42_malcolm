@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_malcolm.c                                       :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 17:11:24 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/02 15:02:21 by guferrei         ###   ########.fr       */
+/*   Created: 2024/04/02 15:00:22 by guferrei          #+#    #+#             */
+/*   Updated: 2024/04/02 15:00:38 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_malcolm.h"
+#include "../../include/ft_malcolm.h"
 
-int main(int argc, char **argv) {
-	t_arp_hdr	*arp_request;
-	char 		*interface;
-	t_cli_args	*input;
-
-	define_signal();
-
-	if (!cli_validator(argc, argv)) {
-		printf("INVALID INPUT\n");
-		exit(1);
+void	print_ip_n_mac(uint8_t *ip, uint8_t *mac) {
+	if (ip) {
+		printf ("IP: %u.%u.%u.%u\n",
+			ip[0],
+			ip[1],
+			ip[2],
+			ip[3]);
 	}
 
-	input = get_cli_args(argv);
-
-	interface = find_available_interface();
-	arp_request = recover_arp_request(input);
-	send_arp_request(arp_request, interface, input);
+	if (mac) {
+		printf ("MAC: ");
+		for (int i=0; i<6; i++) {
+			printf ("%02x:", mac[i]);
+		}
+		printf("\n");
+	}
 }

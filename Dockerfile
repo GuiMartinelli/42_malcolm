@@ -1,9 +1,6 @@
 FROM ubuntu
 
-ENV TZ=Europe/Rome
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+WORKDIR /home
+COPY . .
 
-RUN apt-get update && apt-get install -y iptables tcpdump dsniff iproute2 python3 python3-pip tmux dnsutils build-essential git clang
-RUN pip3 install scapy mitmproxy
-
-CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
+RUN apt-get update && apt-get install -y build-essential make git

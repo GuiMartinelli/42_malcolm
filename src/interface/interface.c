@@ -6,13 +6,13 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:20:08 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/01 15:20:20 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:02:04 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ft_malcolm.h"
 
-char *findAvailableInterface(void) {
+char *find_available_interface(void) {
 	struct ifaddrs *ifaddr;
 	char *if_name;
 	char host[NI_MAXHOST];

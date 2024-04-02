@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_malcolm.c                                       :+:      :+:    :+:   */
+/*   validator.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 17:11:24 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/02 15:02:21 by guferrei         ###   ########.fr       */
+/*   Created: 2024/04/02 14:59:01 by guferrei          #+#    #+#             */
+/*   Updated: 2024/04/02 15:01:07 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_malcolm.h"
+#include "../../include/ft_malcolm.h"
 
-int main(int argc, char **argv) {
-	t_arp_hdr	*arp_request;
-	char 		*interface;
-	t_cli_args	*input;
+int cli_validator(int argc, char **argv) {
+	if (argc != 5)
+		return (FALSE);
+	
+	// validate_ip(argv[1]);
+	// validate_mac(argv[2]);
+	// validate_ip(argv[3]);
+	// validate_mac(argv[4]);
 
-	define_signal();
-
-	if (!cli_validator(argc, argv)) {
-		printf("INVALID INPUT\n");
-		exit(1);
-	}
-
-	input = get_cli_args(argv);
-
-	interface = find_available_interface();
-	arp_request = recover_arp_request(input);
-	send_arp_request(arp_request, interface, input);
+	return (TRUE);
 }
