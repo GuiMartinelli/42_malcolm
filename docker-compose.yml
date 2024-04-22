@@ -2,23 +2,31 @@ version: "3.7"
 
 services:
     alice:
-        image: jlesage/firefox
+        build:
+          context: .
+          dockerfile: Dockerfile.victim
         container_name: alice
+        privileged: true
         restart: always
         networks:
             - mitm
 
     bob:
-        image: aikain/simplehttpserver:0.1
+        build:
+          context: .
+          dockerfile: Dockerfile.victim
         container_name: bob
+        privileged: true
         restart: always
         networks:
             - mitm
 
     malcolm:
-        privileged: true
-        build: .
+        build:
+          context: .
+          dockerfile: Dockerfile.attacker
         container_name: malcolm
+        privileged: true
         networks:
             - mitm
 

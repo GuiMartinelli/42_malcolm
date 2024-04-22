@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM debian:buster
 
 WORKDIR /home
 COPY . ./ft_malcolm/

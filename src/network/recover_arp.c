@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:55:40 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/02 15:59:56 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:02:45 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,28 @@ t_arp_hdr	*recover_arp_request(t_cli_args *info) {
 	ether_frame = allocate_ustrmem(IP_MAXPACKET);
 	printf("Waiting a ARP Request from Target to intercept...\n");
 
-	// sd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP));
-	// if (sd < 0) {
-	// 	printf("Error getting socket descriptor\n");
-	// 	exit(1);
-	// }
+	sd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP));
+	if (sd < 0) {
+		printf("Error getting socket descriptor\n");
+		exit(1);
+	}
 
 
-	// arp_request = (t_arp_hdr *) (ether_frame + 6 + 6 + 2);
-	// while (((((ether_frame[12]) << 8) + ether_frame[13]) != ETH_P_ARP) ||
-	// 		(ntohs(arp_request->opcode) != ARPOP_REPLY)) {
+	arp_request = (t_arp_hdr *) (ether_frame + 6 + 6 + 2);
+	while (((((ether_frame[12]) << 8) + ether_frame[13]) != ETH_P_ARP) ||
+			(ntohs(arp_request->opcode) != ARPOP_REPLY)) {
 
-	// 	if (recv(sd, ether_frame, IP_MAXPACKET, 0) < 0) {
-	// 		printf("recv() failed:");
-	// 		exit(EXIT_FAILURE);
-	// 	}
+		if (recv(sd, ether_frame, IP_MAXPACKET, 0) < 0) {
+			printf("recv() failed:");
+			exit(EXIT_FAILURE);
+		}
 
-	// 	if (is_request_from_target(arp_request, info)) {
-	// 		print_request_info(arp_request->sender_ip, arp_request->target_ip);
-	// 		close(sd);
-	// 		return (arp_request);
-	// 	}
-	// }
-	// close(sd);
+		if (is_request_from_target(arp_request, info)) {
+			print_request_info(arp_request->sender_ip, arp_request->target_ip);
+			close(sd);
+			return (arp_request);
+		}
+	}
+	close(sd);
 	return (NULL);
 }

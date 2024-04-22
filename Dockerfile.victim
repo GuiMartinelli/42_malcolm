@@ -1,0 +1,5 @@
+FROM debian:buster
+
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils net-tools iputils-ping
+
+CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
