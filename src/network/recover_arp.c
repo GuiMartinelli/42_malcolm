@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:55:40 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/22 16:02:45 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:59:12 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ t_arp_hdr	*recover_arp_request(t_cli_args *info) {
 		printf("Error getting socket descriptor\n");
 		exit(1);
 	}
-
 
 	arp_request = (t_arp_hdr *) (ether_frame + 6 + 6 + 2);
 	while (((((ether_frame[12]) << 8) + ether_frame[13]) != ETH_P_ARP) ||
