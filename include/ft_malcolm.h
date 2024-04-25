@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/02 15:38:03 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:43:10 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ typedef struct s_arp_packet {
 
 t_cli_args	*get_cli_args(char **argv);
 int cli_validator(int argc, char **argv);
+int	is_valid_ip(char *ip);
+int	is_valid_mac(char *mac);
 
 void	print_ip_n_mac(uint8_t *ip, uint8_t *mac);
 void	print_interface_info(char * interface);
