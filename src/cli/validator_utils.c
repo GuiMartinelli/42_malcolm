@@ -6,24 +6,32 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 15:41:33 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/25 15:42:09 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:19:56 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ft_malcolm.h"
 
-int	count_ip_bytes(char **splitted_ip) {
-	int	count;
-
-	count = 0;
-	while (*splitted_ip) {
-		splitted_ip++;
-		count++;
-	}
-	return (count);
+int	is_hex(int c) {
+	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 70) || (c >= 97 && c <= 102))
+		return (1);
+	else
+		return (0);
 }
 
-int	is_valid_byte(char *byte, int index) {
+int	is_valid_mac_byte(char *byte, int index) {
+	for(int i = 0; i < ft_strlen(byte); i++) {
+		if (!is_hex(byte[i]))
+			return FALSE;
+	}
+
+	if (ft_strlen(byte) != 2)
+		return FALSE;
+
+	return TRUE;
+}
+
+int	is_valid_ip_byte(char *byte, int index) {
 	for(int i = 0; i < ft_strlen(byte); i++) {
 		if (!ft_isdigit(byte[i]))
 			return FALSE;
@@ -38,21 +46,7 @@ int	is_valid_byte(char *byte, int index) {
 	return FALSE;
 }
 
-int	is_valid_ip(char *ip) {
-	char	**splitted_ip;
-	char	ip_byte;
-
-	if (!ip)
-		return FALSE;
-
-	splitted_ip = ft_split(ip, '.');
-
-	if (count_ip_bytes(splitted_ip) != 4)
-		return FALSE;
-
-	for (int i = 0; i < 4; i++) {
-		if (!is_valid_byte(splitted_ip[i], i))
-			return FALSE;
-	}
-	return TRUE;
+int	is_valid_byte(char *byte, int index, int flag) {
+	return (flag == IPv4 ?
+				is_valid_ip_byte(byte, index) : is_valid_mac_byte(byte, index));
 }

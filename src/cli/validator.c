@@ -6,20 +6,70 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:59:01 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/25 15:43:43 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:19:43 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ft_malcolm.h"
 
+void	clean_matrix(char **matrix, int size) {
+	for (int i = 0; i < size; i++)
+		free(matrix[i]);
+	free(matrix);
+}
+
+int	count_addr_bytes(char **splitted_ip) {
+	int	count;
+
+	count = 0;
+	while (*splitted_ip) {
+		splitted_ip++;
+		count++;
+	}
+	return (count);
+}
+
+void	set_delimiter(char *delimiter, int flag) {
+	if (flag == IPv4)
+		*delimiter = '.';
+	else
+		*delimiter = ':';
+}
+
+int	is_valid_addr(char *addr, int flag) {
+	char	**splitted_addr;
+	char	addr_byte;
+	char	delimiter;
+
+	if (!addr)
+		return FALSE;
+
+	set_delimiter(&delimiter, flag);
+	splitted_addr = ft_split(addr, delimiter);
+
+	if (count_addr_bytes(splitted_addr) != flag) {
+		clean_matrix(splitted_addr, flag);
+		return FALSE;
+	}
+
+	for (int i = 0; i < flag; i++) {
+		if (!is_valid_byte(splitted_addr[i], i, flag)) {
+			clean_matrix(splitted_addr, flag);
+			return FALSE;
+		}
+	}
+	clean_matrix(splitted_addr, flag);
+	return TRUE;
+}
+
 int cli_validator(int argc, char **argv) {
 	if (argc != 5)
 		return (FALSE);
 	
-	if (is_valid_ip(argv[1]) &&
-		validate_mac(argv[2]) &&
-		is_valid_ip(argv[3]) &&
-		validate_mac(argv[4])) {
+	if (is_valid_addr(argv[1], IPv4) &&
+		is_valid_addr(argv[2], MAC) &&
+		is_valid_addr(argv[3], IPv4) &&
+		is_valid_addr(argv[4], MAC)) {
 		return TRUE;
 	}
 
