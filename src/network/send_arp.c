@@ -6,11 +6,16 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:57:45 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/23 15:35:13 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/04/26 16:14:52 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ft_malcolm.h"
+
+void	clear_structs(t_arp_packet *arp_response, t_arp_hdr *arp_request) {
+	free(arp_response);
+	free(arp_request);
+}
 
 struct sockaddr_ll	set_device(char *interface, t_cli_args *info) {
 	struct sockaddr_ll	device;
@@ -21,7 +26,7 @@ struct sockaddr_ll	set_device(char *interface, t_cli_args *info) {
 	}
 
 	device.sll_family = AF_PACKET;
-	memcpy(device.sll_addr, info->source_mac, 6 * sizeof(uint8_t));
+	ft_memcpy(device.sll_addr, info->source_mac, 6 * sizeof(uint8_t));
 	device.sll_halen = 6;
 
 	return (device);
@@ -64,6 +69,9 @@ int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_cli_args *info) 
 		perror("sendto() failed");
 		exit(EXIT_FAILURE);
 	}
+
 	print_response_info(info->target_ip, info->source_ip);
+
+	clear_structs(arp_response, arp_request);
 	close(sd);
 }
