@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:55:40 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/26 16:39:54 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:00:17 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ t_arp_hdr	*recover_arp_request(t_cli_args *info) {
 	sd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP));
 	if (sd < 0) {
 		printf("Error getting socket descriptor\n");
-		free(ether_frame);
-		exit(1);
+		free_n_null(ether_frame);
+		return (NULL);
 	}
 
 	arp_request = (t_arp_hdr *) (ether_frame + 6 + 6 + 2);
@@ -62,17 +62,17 @@ t_arp_hdr	*recover_arp_request(t_cli_args *info) {
 
 		if (recv(sd, ether_frame, IP_MAXPACKET, 0) < 0) {
 			printf("recv() failed:");
-			exit(EXIT_FAILURE);
+			free_n_null(ether_frame);
+			return (NULL);
 		}
 
 		if (is_request_from_target(arp_request, info)) {
 			print_request_info(arp_request->sender_ip, arp_request->target_ip);
-			free(ether_frame);
 			close(sd);
 			return (arp_request);
 		}
 	}
-	free(ether_frame);
+	free_n_null(ether_frame);
 	close(sd);
 	return (NULL);
 }

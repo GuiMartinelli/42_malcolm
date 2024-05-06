@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/26 15:23:55 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:40:45 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,9 @@ void	print_request_info(uint8_t *target_ip, uint8_t *source_ip);
 void	print_response_info(uint8_t *target_ip, uint8_t *source_ip);
 
 void	terminate_program(int signal);
+
+void	free_cli(t_cli_args	*input);
+void	free_n_null(void *ptr);
 
 char *find_available_interface(void);
 

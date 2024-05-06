@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:11:24 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/26 16:40:36 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:44:19 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ int main(int argc, char **argv) {
 		print_interface_error();
 
 	arp_request = recover_arp_request(input);
+
+	if (!arp_request) {
+		free_n_null(interface);
+		free_cli(input);
+	}
 	send_arp_request(arp_request, interface, input);
-	// free_cli(input);
+	free_n_null(interface);
+	free_cli(input);
 }

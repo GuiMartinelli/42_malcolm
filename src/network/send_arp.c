@@ -6,15 +6,14 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:57:45 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/26 16:14:52 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:01:39 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ft_malcolm.h"
 
 void	clear_structs(t_arp_packet *arp_response, t_arp_hdr *arp_request) {
-	free(arp_response);
-	free(arp_request);
+	free_n_null(arp_response);
 }
 
 struct sockaddr_ll	set_device(char *interface, t_cli_args *info) {
@@ -62,16 +61,17 @@ int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_cli_args *info) 
 	
 	if ((sd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP))) < 0) {
 		perror("socket() failed ");
-		exit(EXIT_FAILURE);
+		free_n_null(arp_response);
+		return (1);
 	}
 
 	if (sendto(sd, arp_response, sizeof(t_arp_packet), 0, (struct sockaddr *)&device, sizeof(device)) < 0) {
 		perror("sendto() failed");
-		exit(EXIT_FAILURE);
+		free_n_null(arp_response);
+		return (1);
 	}
 
 	print_response_info(info->target_ip, info->source_ip);
-
-	clear_structs(arp_response, arp_request);
+	free_n_null(arp_response);
 	close(sd);
 }
