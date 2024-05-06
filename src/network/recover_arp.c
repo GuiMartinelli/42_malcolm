@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:55:40 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/06 16:00:17 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:06:40 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_arp_hdr	*recover_arp_request(t_cli_args *info) {
 
 		if (is_request_from_target(arp_request, info)) {
 			print_request_info(arp_request->sender_ip, arp_request->target_ip);
+			info->ether_frame = ether_frame;
 			close(sd);
 			return (arp_request);
 		}

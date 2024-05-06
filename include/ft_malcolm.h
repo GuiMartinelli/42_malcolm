@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/06 15:40:45 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:06:20 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_cli_args {
 	uint8_t	*target_mac;
 	uint8_t	*source_ip;
 	uint8_t	*source_mac;
+	uint8_t	*ether_frame;
 } t_cli_args;
 
 typedef struct s_ether_hdr {
@@ -77,7 +78,6 @@ int cli_validator(int argc, char **argv);
 int	is_valid_addr(char *addr, int flag);
 int	is_valid_byte(char *byte, int index, int flag);
 
-void	print_ip_n_mac(uint8_t *ip, uint8_t *mac);
 void	print_interface_info(char * interface);
 void	print_interface_error();
 void	print_cli_error();
