@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:55:40 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/06 16:06:40 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:16:35 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ t_arp_hdr	*recover_arp_request(t_cli_args *info) {
 	arp_request = (t_arp_hdr *) (ether_frame + 6 + 6 + 2);
 	while (((((ether_frame[12]) << 8) + ether_frame[13]) != ETH_P_ARP) ||
 			(ntohs(arp_request->opcode) != ARPOP_REPLY)) {
-
-		// signal(SIGINT, terminate_program);
 
 		if (recv(sd, ether_frame, IP_MAXPACKET, 0) < 0) {
 			printf("recv() failed:");

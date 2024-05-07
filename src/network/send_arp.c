@@ -6,15 +6,11 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:57:45 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/06 16:01:39 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:47:16 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ft_malcolm.h"
-
-void	clear_structs(t_arp_packet *arp_response, t_arp_hdr *arp_request) {
-	free_n_null(arp_response);
-}
 
 struct sockaddr_ll	set_device(char *interface, t_cli_args *info) {
 	struct sockaddr_ll	device;
@@ -74,4 +70,5 @@ int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_cli_args *info) 
 	print_response_info(info->target_ip, info->source_ip);
 	free_n_null(arp_response);
 	close(sd);
+	return(0);
 }

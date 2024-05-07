@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ip_validator.c                                     :+:      :+:    :+:   */
+/*   validator_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 15:41:33 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/26 15:19:56 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:45:39 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	is_hex(int c) {
 		return (0);
 }
 
-int	is_valid_mac_byte(char *byte, int index) {
-	for(int i = 0; i < ft_strlen(byte); i++) {
+int	is_valid_mac_byte(char *byte) {
+	for(size_t i = 0; i < ft_strlen(byte); i++) {
 		if (!is_hex(byte[i]))
 			return FALSE;
 	}
@@ -32,7 +32,7 @@ int	is_valid_mac_byte(char *byte, int index) {
 }
 
 int	is_valid_ip_byte(char *byte, int index) {
-	for(int i = 0; i < ft_strlen(byte); i++) {
+	for(size_t i = 0; i < ft_strlen(byte); i++) {
 		if (!ft_isdigit(byte[i]))
 			return FALSE;
 	}
@@ -48,5 +48,5 @@ int	is_valid_ip_byte(char *byte, int index) {
 
 int	is_valid_byte(char *byte, int index, int flag) {
 	return (flag == IPv4 ?
-				is_valid_ip_byte(byte, index) : is_valid_mac_byte(byte, index));
+				is_valid_ip_byte(byte, index) : is_valid_mac_byte(byte));
 }

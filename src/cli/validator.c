@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:59:01 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/26 15:19:43 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:45:52 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	set_delimiter(char *delimiter, int flag) {
 
 int	is_valid_addr(char *addr, int flag) {
 	char	**splitted_addr;
-	char	addr_byte;
 	char	delimiter;
 
 	if (!addr)

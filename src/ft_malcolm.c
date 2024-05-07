@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:11:24 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/06 15:44:19 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:42:05 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int main(int argc, char **argv) {
 	char 		*interface;
 	t_cli_args	*input;
 
+	signal(SIGINT, terminate_program);
+	
 	if (!cli_validator(argc, argv))
 		print_cli_error();
 

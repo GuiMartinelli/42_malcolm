@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:20:08 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/02 15:09:52 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:46:06 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 char *find_available_interface(void) {
 	struct ifaddrs *ifaddr;
 	char *if_name;
-	char host[NI_MAXHOST];
 
 	if_name = NULL;
 
