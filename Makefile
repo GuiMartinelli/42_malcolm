@@ -6,21 +6,48 @@
 #    By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/23 15:38:06 by guferrei          #+#    #+#              #
-#    Updated: 2024/05/06 15:40:59 by guferrei         ###   ########.fr        #
+#    Updated: 2024/05/08 15:21:08 by guferrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-all:
-	gcc -o ft_malcolm src/libft/*.c src/cli/*.c src/interface/interface.c src/signal/signal.c src/network/*.c src/display/*.c  src/utils/*.c src/ft_malcolm.c
+PATH_SRC = src
+PATH_LIBFT = src/libft
 
-docker:
-	docker-compose up -d --build
+NAME = ft_malcolm
+LIBFT = $(addprefix $(PATH_LIBFT)/, libft.a)
+MAIN = $(PATH_SRC)/ft_malcolm.c
+SRC = \
+	$(addprefix $(PATH_SRC)/cli/, cli.c validator_utils.c validator.c) \
+	$(PATH_SRC)/display/print.c \
+	$(addprefix $(PATH_SRC)/interface/, interface.c) \
+	$(addprefix $(PATH_SRC)/network/, recover_arp.c send_arp.c) \
+	$(PATH_SRC)/utils/utils.c \
+	$(PATH_SRC)/signal/signal.c
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
+COMPOSE = docker-compose
+DOCKER_FLAGS = up -d --build
+DOCKER_IMAGES = image prune -a
+DOCKER_SYSTEM = system prune -f
+
+all: $(NAME)
+
+$(NAME): $(LIBFT)
+	$(CC) $(CFLAGS) $(MAIN) $(SRC) $(LIBFT) -o $(NAME)
+
+$(LIBFT):
+	@$(MAKE) -C $(PATH_LIBFT)
 
 clean:
-	rm -f ft_malcolm
+	@$(MAKE) clean -C $(PATH_LIBFT)
+	rm -f $(NAME)
+
+docker:
+	$(COMPOSE) $(DOCKER_FLAGS)
 
 fclean: clean
-	docker image prune -a && docker system prune -f
+	@$(MAKE) fclean -C $(PATH_LIBFT)
+	docker $(DOCKER_IMAGES) && docker $(DOCKER_SYSTEM)
 
 re: clean all
 
