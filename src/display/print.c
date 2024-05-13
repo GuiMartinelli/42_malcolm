@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:00:22 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/02 15:37:53 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:22:15 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,8 @@ void	print_response_info(uint8_t *target_ip, uint8_t *source_ip) {
 	printf(" spoofing MAC Address of ");
 	print_ip(source_ip);
 	printf("\n");
+}
+
+void	print_exit(void) {
+	printf("\nClosing Program: ft_malcolm did not recovered any request\n");
 }

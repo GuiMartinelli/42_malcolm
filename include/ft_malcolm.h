@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/06 16:06:20 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:21:15 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_MALCOLM_H
 
 #include <stdlib.h>
+#include <signal.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -22,6 +23,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
+#include <bits/sigaction.h>
 #include <net/if.h>
 #include <net/ethernet.h>
 #include <linux/if_ether.h>
@@ -29,7 +31,6 @@
 #include <arpa/inet.h>
 #include <netinet/ip.h>
 #include <bits/ioctls.h>
-# include <signal.h>
 #include "../src/libft/libft.h"
 
 #define NI_MAXHOST 1025
@@ -85,8 +86,9 @@ void	print_ip(uint8_t *ip);
 void	print_mac(uint8_t *mac);
 void	print_request_info(uint8_t *target_ip, uint8_t *source_ip);
 void	print_response_info(uint8_t *target_ip, uint8_t *source_ip);
+void	print_exit(void);
 
-void	terminate_program(int signal);
+void	set_signal(void);
 
 void	free_cli(t_cli_args	*input);
 void	free_n_null(void *ptr);

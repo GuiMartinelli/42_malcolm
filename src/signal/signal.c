@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:25:31 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/07 15:46:20 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:21:27 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 
 void	terminate_program(int signal) {
 	(void)signal;
-	printf("EXITING.........................\n");
+	print_exit();
 	exit(1);
+}
+
+void	set_signal(void) {
+	struct sigaction act = {0};
+
+	act.sa_handler = &terminate_program;
+	sigaction(SIGINT, &act, NULL);
 }
