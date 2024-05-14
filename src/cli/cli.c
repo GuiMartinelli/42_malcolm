@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:11:43 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/14 14:46:37 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:54:47 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ t_info	*get_cli_args(char **argv) {
 
 	if (!input->source_ip || !input->source_mac ||
 			!input->target_ip || !input->target_mac) {
-		perror("get_cli_args");
-		exit(EXIT_FAILURE);
+		print_cli_error();
+		exit(1);
 	}
 
 	return (input);
