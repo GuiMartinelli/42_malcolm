@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:09:49 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/06 16:06:57 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:47:03 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	free_n_null(void *ptr) {
 	}
 }
 
-void	free_cli(t_cli_args	*input) {
+void	free_cli(t_info	*input) {
 	free_n_null(input->source_ip);
 	free_n_null(input->source_mac);
 	free_n_null(input->target_ip);

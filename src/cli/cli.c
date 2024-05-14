@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:11:43 by guferrei          #+#    #+#             */
-/*   Updated: 2024/04/02 14:35:07 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:46:37 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ uint8_t	*set_mac(char *input) {
 	return buf;
 }
 
-t_cli_args	*get_cli_args(char **argv) {
-	t_cli_args	*input;
+t_info	*get_cli_args(char **argv) {
+	t_info	*input;
 
-	input = malloc(sizeof(t_cli_args));
+	input = malloc(sizeof(t_info));
 
 	input->source_ip = set_ip(argv[1]);
 	input->source_mac = set_mac(argv[2]);

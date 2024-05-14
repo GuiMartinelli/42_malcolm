@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/13 15:21:15 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:46:30 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@
 #define IP4_HDRLEN 20	// IPv4 header length
 #define ARP_HDRLEN 28	// ARP header length
 
-typedef struct s_cli_args {
+typedef struct s_info {
 	uint8_t	*target_ip;
 	uint8_t	*target_mac;
 	uint8_t	*source_ip;
 	uint8_t	*source_mac;
 	uint8_t	*ether_frame;
-} t_cli_args;
+} t_info;
 
 typedef struct s_ether_hdr {
 	u_int8_t	dhost[MAC];
@@ -74,7 +74,7 @@ typedef struct s_arp_packet {
 	t_arp_hdr	arp;
 } t_arp_packet;
 
-t_cli_args	*get_cli_args(char **argv);
+t_info	*get_cli_args(char **argv);
 int cli_validator(int argc, char **argv);
 int	is_valid_addr(char *addr, int flag);
 int	is_valid_byte(char *byte, int index, int flag);
@@ -90,12 +90,12 @@ void	print_exit(void);
 
 void	set_signal(void);
 
-void	free_cli(t_cli_args	*input);
+void	free_cli(t_info	*input);
 void	free_n_null(void *ptr);
 
 char *find_available_interface(void);
 
-t_arp_hdr	*recover_arp_request(t_cli_args *info);
-int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_cli_args *info);
+t_arp_hdr	*recover_arp_request(t_info *info);
+int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_info *info);
 
 #endif

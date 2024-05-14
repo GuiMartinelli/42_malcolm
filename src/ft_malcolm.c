@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:11:24 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/13 15:22:03 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:47:10 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int main(int argc, char **argv) {
 	t_arp_hdr	*arp_request;
 	char 		*interface;
-	t_cli_args	*input;
+	t_info	*input;
 
 	set_signal();
 	if (!cli_validator(argc, argv))

@@ -6,13 +6,13 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:57:45 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/07 15:47:16 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:46:56 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ft_malcolm.h"
 
-struct sockaddr_ll	set_device(char *interface, t_cli_args *info) {
+struct sockaddr_ll	set_device(char *interface, t_info *info) {
 	struct sockaddr_ll	device;
 
 	if ((device.sll_ifindex = if_nametoindex(interface)) == 0) {
@@ -27,7 +27,7 @@ struct sockaddr_ll	set_device(char *interface, t_cli_args *info) {
 	return (device);
 }
 
-t_arp_packet	*set_arp_response(t_arp_hdr *arp_request, t_cli_args *info) {
+t_arp_packet	*set_arp_response(t_arp_hdr *arp_request, t_info *info) {
 	t_arp_packet	*arp_response;
 	arp_response = ft_calloc(1, sizeof(t_arp_packet));
 
@@ -47,7 +47,7 @@ t_arp_packet	*set_arp_response(t_arp_hdr *arp_request, t_cli_args *info) {
 	return (arp_response);
 }
 
-int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_cli_args *info) {
+int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_info *info) {
 	int					sd;
 	t_arp_packet		*arp_response;
 	struct sockaddr_ll	device;

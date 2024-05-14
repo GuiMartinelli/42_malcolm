@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:55:40 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/07 15:16:35 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:46:51 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ int	is_equal_address(uint8_t *ip_a, uint8_t *ip_b, int mode) {
 	return TRUE;
 }
 
-int	is_request_from_target(t_arp_hdr *arp_request, t_cli_args *info) {
+int	is_request_from_target(t_arp_hdr *arp_request, t_info *info) {
 	return (is_equal_address(info->source_ip, arp_request->target_ip, IPv4) &&
 			is_equal_address(info->target_ip, arp_request->sender_ip, IPv4) &&
 			is_equal_address(info->target_mac, arp_request->sender_mac, MAC));
 }
 
-t_arp_hdr	*recover_arp_request(t_cli_args *info) {
+t_arp_hdr	*recover_arp_request(t_info *info) {
 	int			sd;
 	uint8_t		*ether_frame;
 	t_arp_hdr	*arp_request;
