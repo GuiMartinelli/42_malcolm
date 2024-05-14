@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:11:24 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/14 14:47:10 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:59:48 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int main(int argc, char **argv) {
 
 	set_signal();
 	if (!cli_validator(argc, argv))
-		print_cli_error();
+		print_error("Invalid input!");
 
 	input = get_cli_args(argv);
 
 	interface = find_available_interface();
 	if (!interface)
-		print_interface_error();
+		print_error("Could not find interfaces");
 
 	arp_request = recover_arp_request(input);
 

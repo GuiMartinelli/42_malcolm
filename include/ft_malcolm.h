@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/14 14:52:50 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:58:42 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ int			is_valid_byte(char *byte, int index, int flag);
 
 //Display
 void		print_interface_info(char * interface);
-void		print_interface_error();
-void		print_cli_error();
+void		print_error(char *msg);
 void		print_ip(uint8_t *ip);
 void		print_mac(uint8_t *mac);
 void		print_request_info(uint8_t *target_ip, uint8_t *source_ip);

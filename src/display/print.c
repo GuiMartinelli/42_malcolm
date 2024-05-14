@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:00:22 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/13 15:22:15 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:56:21 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 void	print_interface_info(char * interface) {
 	if (interface)
 		printf("Found available interface: %s\n", interface);
+}
+
+void	print_error(char *msg) {
+	printf("Error: %s!\n", msg);
+	exit(1);
 }
 
 void	print_cli_error() {
