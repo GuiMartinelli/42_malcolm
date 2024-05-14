@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:55:40 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/14 14:46:51 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:05:18 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@ uint8_t *allocate_ustrmem(int len) {
 	uint8_t *tmp;
 
 	tmp = ft_calloc(len, sizeof(uint8_t));
-	
 	if (!tmp) {
 		printf("Error: Could not allocate memory properly\n");
 		exit(1);
 	}
-	
 	return (tmp);
 }
 

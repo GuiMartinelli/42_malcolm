@@ -6,16 +6,16 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:11:24 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/14 14:59:48 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:03:55 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_malcolm.h"
 
-int main(int argc, char **argv) {
+int	main(int argc, char **argv) {
 	t_arp_hdr	*arp_request;
-	char 		*interface;
-	t_info	*input;
+	char		*interface;
+	t_info		*input;
 
 	set_signal();
 	if (!cli_validator(argc, argv))
@@ -28,11 +28,11 @@ int main(int argc, char **argv) {
 		print_error("Could not find interfaces");
 
 	arp_request = recover_arp_request(input);
-
 	if (!arp_request) {
 		free_n_null(interface);
 		free_cli(input);
 	}
+
 	send_arp_request(arp_request, interface, input);
 	free_n_null(interface);
 	free_cli(input);
