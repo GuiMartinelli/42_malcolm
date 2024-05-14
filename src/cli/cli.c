@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:11:43 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/14 14:57:44 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:06:54 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_info	*get_cli_args(char **argv) {
 
 	if (!input->source_ip || !input->source_mac ||
 			!input->target_ip || !input->target_mac) {
-		print_error("Input was not setted correctly");
+		print_error("Input was not writed correctly");
 		exit(1);
 	}
 
