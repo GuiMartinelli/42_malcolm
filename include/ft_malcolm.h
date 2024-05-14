@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/14 14:46:30 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:52:50 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,10 @@
 #include <bits/ioctls.h>
 #include "../src/libft/libft.h"
 
-#define NI_MAXHOST 1025
-#define NI_MAXSERV 32
 #define TRUE 1
 #define FALSE 0
-#define IPv4 4
-#define MAC 6
+#define IPv4 4 //Ipv4 lenght
+#define MAC 6 //Mac lenght
 #define ETH_HDRLEN 14	// Ethernet header length
 #define IP4_HDRLEN 20	// IPv4 header length
 #define ARP_HDRLEN 28	// ARP header length
@@ -74,28 +72,33 @@ typedef struct s_arp_packet {
 	t_arp_hdr	arp;
 } t_arp_packet;
 
-t_info	*get_cli_args(char **argv);
-int cli_validator(int argc, char **argv);
-int	is_valid_addr(char *addr, int flag);
-int	is_valid_byte(char *byte, int index, int flag);
+//Input Handling and Validation
+t_info		*get_cli_args(char **argv);
+int			cli_validator(int argc, char **argv);
+int			is_valid_byte(char *byte, int index, int flag);
 
-void	print_interface_info(char * interface);
-void	print_interface_error();
-void	print_cli_error();
-void	print_ip(uint8_t *ip);
-void	print_mac(uint8_t *mac);
-void	print_request_info(uint8_t *target_ip, uint8_t *source_ip);
-void	print_response_info(uint8_t *target_ip, uint8_t *source_ip);
-void	print_exit(void);
+//Display
+void		print_interface_info(char * interface);
+void		print_interface_error();
+void		print_cli_error();
+void		print_ip(uint8_t *ip);
+void		print_mac(uint8_t *mac);
+void		print_request_info(uint8_t *target_ip, uint8_t *source_ip);
+void		print_response_info(uint8_t *target_ip, uint8_t *source_ip);
+void		print_exit(void);
 
-void	set_signal(void);
+//Signal
+void		set_signal(void);
 
-void	free_cli(t_info	*input);
-void	free_n_null(void *ptr);
+//Memory Cleaning
+void		free_cli(t_info	*input);
+void		free_n_null(void *ptr);
 
-char *find_available_interface(void);
+//Interface
+char		*find_available_interface(void);
 
+//Network
 t_arp_hdr	*recover_arp_request(t_info *info);
-int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_info *info);
+int			send_arp_request(t_arp_hdr *arp_request, char *interface, t_info *info);
 
 #endif
