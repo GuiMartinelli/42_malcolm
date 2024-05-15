@@ -6,16 +6,16 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:59:01 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/07 15:45:52 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/15 09:57:45 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ft_malcolm.h"
 
-void	clean_matrix(char **matrix, int size) {
-	for (int i = 0; i < size; i++)
-		free(matrix[i]);
-	free(matrix);
+void	clean_matrix(char **matrix) {
+	for (int i = 0; matrix[i]; i++)
+		free_n_null(matrix[i]);
+	free_n_null(matrix);
 }
 
 int	count_addr_bytes(char **splitted_ip) {
@@ -47,17 +47,17 @@ int	is_valid_addr(char *addr, int flag) {
 	splitted_addr = ft_split(addr, delimiter);
 
 	if (count_addr_bytes(splitted_addr) != flag) {
-		clean_matrix(splitted_addr, flag);
+		clean_matrix(splitted_addr);
 		return FALSE;
 	}
 
 	for (int i = 0; i < flag; i++) {
 		if (!is_valid_byte(splitted_addr[i], i, flag)) {
-			clean_matrix(splitted_addr, flag);
+			clean_matrix(splitted_addr);
 			return FALSE;
 		}
 	}
-	clean_matrix(splitted_addr, flag);
+	clean_matrix(splitted_addr);
 	return TRUE;
 }
 
