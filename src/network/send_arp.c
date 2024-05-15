@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:57:45 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/14 14:46:56 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:22:38 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_info *info) {
 		return (1);
 	}
 
+	printf("Now sending an ARP reply to the target address with spoofed source, please wait...\n");
 	if (sendto(sd, arp_response, sizeof(t_arp_packet), 0, (struct sockaddr *)&device, sizeof(device)) < 0) {
 		perror("sendto() failed");
 		free_n_null(arp_response);
