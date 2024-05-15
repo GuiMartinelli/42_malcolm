@@ -6,15 +6,17 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:59:01 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/15 09:57:45 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:01:54 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ft_malcolm.h"
 
 void	clean_matrix(char **matrix) {
-	for (int i = 0; matrix[i]; i++)
-		free_n_null(matrix[i]);
+	if (matrix) {
+		for (int i = 0; matrix[i]; i++)
+			free_n_null(matrix[i]);
+	}
 	free_n_null(matrix);
 }
 
