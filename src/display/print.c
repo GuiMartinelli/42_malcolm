@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:00:22 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/15 10:21:25 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:38:47 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_interface_info(char * interface) {
 }
 
 void	print_error(char *msg) {
-	printf("Error: %s!\n", msg);
+	printf("Error: %s! Exiting program...\n", msg);
 	exit(1);
 }
 

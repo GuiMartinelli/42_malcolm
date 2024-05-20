@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:55:40 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/14 15:05:18 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:47:08 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,22 @@ t_arp_hdr	*recover_arp_request(t_info *info) {
 	t_arp_hdr	*arp_request;
 
 	ether_frame = allocate_ustrmem(IP_MAXPACKET);
-	printf("Waiting a ARP Request from Target to intercept...\n");
 
 	sd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP));
 	if (sd < 0) {
-		printf("Error getting socket descriptor\n");
 		free_n_null(ether_frame);
-		return (NULL);
+		print_error("Could not get socket descriptor");
 	}
 
+	printf("Waiting a ARP Request from Target to intercept...\n");
 	arp_request = (t_arp_hdr *) (ether_frame + 6 + 6 + 2);
 	while (((((ether_frame[12]) << 8) + ether_frame[13]) != ETH_P_ARP) ||
 			(ntohs(arp_request->opcode) != ARPOP_REPLY)) {
 
 		if (recv(sd, ether_frame, IP_MAXPACKET, 0) < 0) {
-			printf("recv() failed:");
 			free_n_null(ether_frame);
-			return (NULL);
+			close(sd);
+			print_error("recv error");
 		}
 
 		if (is_request_from_target(arp_request, info)) {

@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/14 14:58:42 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:44:43 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct s_arp_packet {
 
 //Input Handling and Validation
 t_info		*get_cli_args(char **argv);
-int			cli_validator(int argc, char **argv);
+void		cli_validator(int argc, char **argv);
 int			is_valid_byte(char *byte, int index, int flag);
 
 //Display
@@ -88,6 +88,9 @@ void		print_exit(void);
 
 //Signal
 void		set_signal(void);
+
+//Privileges check
+void		check_privileges();
 
 //Memory Cleaning
 void		free_cli(t_info	*input);
