@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/06/04 16:01:19 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:19:38 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ void		send_to_error();
 
 //Display
 void		print_interface_info(char * interface);
-void		print_error(char *msg);
 void		print_ip(uint8_t *ip);
 void		print_mac(uint8_t *mac);
 void		print_request_info(uint8_t *target_ip, uint8_t *source_ip);
