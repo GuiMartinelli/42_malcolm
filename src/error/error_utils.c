@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 15:57:22 by guferrei          #+#    #+#             */
-/*   Updated: 2024/06/04 16:16:28 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:42:02 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	input_error() {
 
 void	arguments_error() {
 	printf("ERROR: Wrong number of arguments\n");
-	printf("\tThe program must be executed with the following arguments:\n");
+	printf("\tThe program must be executed with root privileges and with the following arguments:\n");
 	printf("\tsudo ./ft_malcolm [SOURCE IP] [SOURCE MAC] [TARGET IP] [TARGET MAC]\n\n");
 	printf("Exiting program...\n");
 	exit(1);
@@ -45,7 +45,10 @@ void	recv_error() {
 }
 
 void	privileges_error() {
-	error_msg("Not enough privileges to run the program. You must run with sudo");
+	printf("ERROR: Root privileges are required to run the program\n");
+	printf("\tThe program must be executed with root privileges and with the following arguments:\n");
+	printf("\tsudo ./ft_malcolm [SOURCE IP] [SOURCE MAC] [TARGET IP] [TARGET MAC]\n\n");
+	printf("Exiting program...\n");
 	exit(1);
 }
 
