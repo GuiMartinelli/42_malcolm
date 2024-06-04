@@ -6,7 +6,7 @@
 #    By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/23 15:38:06 by guferrei          #+#    #+#              #
-#    Updated: 2024/05/08 15:21:08 by guferrei         ###   ########.fr        #
+#    Updated: 2024/06/04 16:01:55 by guferrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ MAIN = $(PATH_SRC)/ft_malcolm.c
 SRC = \
 	$(addprefix $(PATH_SRC)/cli/, cli.c validator_utils.c validator.c) \
 	$(PATH_SRC)/display/print.c \
+	$(addprefix $(PATH_SRC)/error/, error.c error_utils.c) \
 	$(addprefix $(PATH_SRC)/interface/, interface.c) \
 	$(addprefix $(PATH_SRC)/network/, recover_arp.c send_arp.c) \
 	$(PATH_SRC)/utils/utils.c \

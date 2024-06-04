@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:59:01 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/20 15:43:07 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:59:55 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	is_valid_addr(char *addr, int flag) {
 
 void cli_validator(int argc, char **argv) {
 	if (argc != 5)
-		print_error("Wrong number of arguments");
+		program_error(ARGUMENTS_ERROR);
 	
 	if (is_valid_addr(argv[1], IPv4) &&
 		is_valid_addr(argv[2], MAC) &&
@@ -74,5 +74,5 @@ void cli_validator(int argc, char **argv) {
 		return;
 	}
 
-	print_error("Invalid Input");
+	program_error(INPUT_ERROR);
 }

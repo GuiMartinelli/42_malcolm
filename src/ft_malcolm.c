@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:11:24 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/20 15:46:07 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:59:13 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv) {
 	input = get_cli_args(argv);
 	interface = find_available_interface();
 	if (!interface)
-		print_error("Could not find interfaces");
+		program_error(INTERFACE_NOT_FOUND_ERROR);
 
 	arp_request = recover_arp_request(input);
 	if (!arp_request) {

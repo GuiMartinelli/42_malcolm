@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/20 15:44:43 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:01:19 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,14 @@
 #define ETH_HDRLEN 14	// Ethernet header length
 #define IP4_HDRLEN 20	// IPv4 header length
 #define ARP_HDRLEN 28	// ARP header length
+
+#define INTERFACE_NOT_FOUND_ERROR -1
+#define INPUT_ERROR -2
+#define ARGUMENTS_ERROR -3
+#define SOCKET_ERROR -4
+#define RECV_ERROR -5
+#define PRIVILEGES_ERROR -6
+#define SEND_TO_ERROR -7
 
 typedef struct s_info {
 	uint8_t	*target_ip;
@@ -77,6 +85,16 @@ t_info		*get_cli_args(char **argv);
 void		cli_validator(int argc, char **argv);
 int			is_valid_byte(char *byte, int index, int flag);
 
+//Error
+void		program_error(int code);
+void		interface_error();
+void		input_error();
+void		arguments_error();
+void		socket_error();
+void		recv_error();
+void		privileges_error();
+void		send_to_error();
+
 //Display
 void		print_interface_info(char * interface);
 void		print_error(char *msg);
@@ -101,6 +119,6 @@ char		*find_available_interface(void);
 
 //Network
 t_arp_hdr	*recover_arp_request(t_info *info);
-int			send_arp_request(t_arp_hdr *arp_request, char *interface, t_info *info);
+void		send_arp_request(t_arp_hdr *arp_request, char *interface, t_info *info);
 
 #endif

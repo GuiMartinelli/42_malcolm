@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:55:40 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/20 15:47:08 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:59:36 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_arp_hdr	*recover_arp_request(t_info *info) {
 	sd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP));
 	if (sd < 0) {
 		free_n_null(ether_frame);
-		print_error("Could not get socket descriptor");
+		program_error(SOCKET_ERROR);
 	}
 
 	printf("Waiting a ARP Request from Target to intercept...\n");
@@ -58,7 +58,7 @@ t_arp_hdr	*recover_arp_request(t_info *info) {
 		if (recv(sd, ether_frame, IP_MAXPACKET, 0) < 0) {
 			free_n_null(ether_frame);
 			close(sd);
-			print_error("recv error");
+			program_error(RECV_ERROR);
 		}
 
 		if (is_request_from_target(arp_request, info)) {

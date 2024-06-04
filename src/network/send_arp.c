@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:57:45 by guferrei          #+#    #+#             */
-/*   Updated: 2024/05/15 10:22:38 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:59:23 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ struct sockaddr_ll	set_device(char *interface, t_info *info) {
 	struct sockaddr_ll	device;
 
 	if ((device.sll_ifindex = if_nametoindex(interface)) == 0) {
-		perror("if_nametoindex() failed to obtain interface index ");
+		program_error(INTERFACE_NOT_FOUND_ERROR);
 		exit(EXIT_FAILURE);
 	}
 
@@ -47,7 +47,7 @@ t_arp_packet	*set_arp_response(t_arp_hdr *arp_request, t_info *info) {
 	return (arp_response);
 }
 
-int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_info *info) {
+void	send_arp_request(t_arp_hdr *arp_request, char *interface, t_info *info) {
 	int					sd;
 	t_arp_packet		*arp_response;
 	struct sockaddr_ll	device;
@@ -56,20 +56,20 @@ int	send_arp_request(t_arp_hdr *arp_request, char *interface, t_info *info) {
 	arp_response = set_arp_response(arp_request, info);
 	
 	if ((sd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ARP))) < 0) {
-		perror("socket() failed ");
 		free_n_null(arp_response);
-		return (1);
+		free_cli(info);
+		program_error(SOCKET_ERROR);
 	}
 
 	printf("Now sending an ARP reply to the target address with spoofed source, please wait...\n");
 	if (sendto(sd, arp_response, sizeof(t_arp_packet), 0, (struct sockaddr *)&device, sizeof(device)) < 0) {
-		perror("sendto() failed");
 		free_n_null(arp_response);
-		return (1);
+		free_cli(info);
+		program_error(SEND_TO_ERROR);
 	}
 
 	print_response_info(info->target_ip, info->source_ip);
 	free_n_null(arp_response);
 	close(sd);
-	return(0);
+	return;
 }
