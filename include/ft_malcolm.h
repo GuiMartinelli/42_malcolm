@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:55 by guferrei          #+#    #+#             */
-/*   Updated: 2024/06/04 16:19:38 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:24:07 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,7 @@ void		print_interface_info(char * interface);
 void		print_ip(uint8_t *ip);
 void		print_mac(uint8_t *mac);
 void		print_request_info(uint8_t *target_ip, uint8_t *source_ip);
-void		print_response_info(uint8_t *target_ip, uint8_t *source_ip);
-void		print_exit(void);
+void		print_response_info(uint8_t *target_ip, uint8_t *source_ip, uint8_t *mac);
 
 //Signal
 void		set_signal(void);

@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:00:22 by guferrei          #+#    #+#             */
-/*   Updated: 2024/06/04 16:20:00 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:33:46 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,12 @@ void	print_request_info(uint8_t *target_ip, uint8_t *source_ip) {
 	printf("\n");
 }
 
-void	print_response_info(uint8_t *target_ip, uint8_t *source_ip) {
+void	print_response_info(uint8_t *target_ip, uint8_t *source_ip, uint8_t *mac) {
 	printf("Sent an ARP reply packet to Target ");
 	print_ip(target_ip);
-	printf(" spoofing MAC Address of ");
+	printf(" spoofing ARP Table of ");
 	print_ip(source_ip);
+	printf(" with MAC address ");
+	print_mac(mac);
 	printf("\n");
-}
-
-void	print_exit(void) {
-	printf("\nClosing Program: ft_malcolm did not recovered any request\n");
 }

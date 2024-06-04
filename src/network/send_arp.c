@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:57:45 by guferrei          #+#    #+#             */
-/*   Updated: 2024/06/04 15:59:23 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:24:38 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	send_arp_request(t_arp_hdr *arp_request, char *interface, t_info *info) {
 		program_error(SEND_TO_ERROR);
 	}
 
-	print_response_info(info->target_ip, info->source_ip);
+	print_response_info(info->target_ip, info->source_ip, info->source_mac);
 	free_n_null(arp_response);
 	close(sd);
 	return;
