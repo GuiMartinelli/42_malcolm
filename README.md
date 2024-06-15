@@ -34,12 +34,12 @@ ARP poisoning (also known as ARP Spoofing) is a well-known technique used to per
 
 ### RESOURCES
 
-(https://datatracker.ietf.org/doc/html/rfc826)<br/>
-(https://datatracker.ietf.org/doc/html/rfc7042)<br/>
-(https://www.networkacademy.io/ccna/ethernet/what-is-arp)<br/>
-(https://man7.org/linux/man-pages/man7/arp.7.html)<br/>
-(https://yurmagccie.wordpress.com/2018/04/18/address-resolution-protocol-arp/)<br/>
-(https://stackoverflow.com/questions/16710040/arp-request-and-reply-using-c-socket-programming)<br/>
-(https://copyprogramming.com/howto/arp-request-and-reply-using-c-socket-programming)<br/>
-(https://lynxbee.com/sending-arp-request-and-receiving-arp-reply-using-c-code/)<br/>
-(https://copyprogramming.com/howto/filter-arp-replies)
+https://datatracker.ietf.org/doc/html/rfc826<br/>
+https://datatracker.ietf.org/doc/html/rfc7042<br/>
+https://www.networkacademy.io/ccna/ethernet/what-is-arp<br/>
+https://man7.org/linux/man-pages/man7/arp.7.html<br/>
+https://yurmagccie.wordpress.com/2018/04/18/address-resolution-protocol-arp/<br/>
+https://stackoverflow.com/questions/16710040/arp-request-and-reply-using-c-socket-programming<br/>
+https://copyprogramming.com/howto/arp-request-and-reply-using-c-socket-programming<br/>
+https://lynxbee.com/sending-arp-request-and-receiving-arp-reply-using-c-code/<br/>
+https://copyprogramming.com/howto/filter-arp-replies
