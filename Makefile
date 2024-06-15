@@ -6,7 +6,7 @@
 #    By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/23 15:38:06 by guferrei          #+#    #+#              #
-#    Updated: 2024/06/04 16:01:55 by guferrei         ###   ########.fr        #
+#    Updated: 2024/06/14 21:43:51 by guferrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,3 @@ fclean: clean
 	docker $(DOCKER_IMAGES) && docker $(DOCKER_SYSTEM)
 
 re: clean all
-
-run:
-	sudo ./ft_malcolm 172.22.0.4 a0:a0:a0:a0:a0:a0 172.22.0.3 02:42:ac:16:00:03
