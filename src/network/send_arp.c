@@ -6,7 +6,7 @@
 /*   By: guferrei <guferrei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:57:45 by guferrei          #+#    #+#             */
-/*   Updated: 2024/06/04 16:24:38 by guferrei         ###   ########.fr       */
+/*   Updated: 2024/06/13 09:33:43 by guferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ t_arp_packet	*set_arp_response(t_arp_hdr *arp_request, t_info *info) {
 	arp_response->arp.ptype = htons(ETHERTYPE_IP);
 	arp_response->arp.hlen = MAC;
 	arp_response->arp.plen = IPv4;
-	arp_response->arp.opcode = htons(ARPOP_REQUEST);
+	arp_response->arp.opcode = htons(ARPOP_REPLY);
 	ft_memcpy(arp_response->arp.sender_ip, arp_request->target_ip, 4 * sizeof(uint8_t));
 	ft_memcpy(arp_response->arp.sender_mac, info->source_mac, 6 * sizeof(uint8_t));
 	ft_memcpy(arp_response->arp.target_ip, arp_request->sender_ip, 4 * sizeof(uint8_t));
+	ft_memcpy(arp_response->arp.target_mac, arp_request->sender_mac, 4 * sizeof(uint8_t));
 
 	return (arp_response);
 }

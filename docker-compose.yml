@@ -5,17 +5,7 @@ services:
         build:
           context: .
           dockerfile: Dockerfile.victim
-        container_name: alice
-        privileged: true
-        restart: always
-        networks:
-            - mitm
-
-    bob:
-        build:
-          context: .
-          dockerfile: Dockerfile.victim
-        container_name: bob
+        container_name: victim
         privileged: true
         restart: always
         networks:
