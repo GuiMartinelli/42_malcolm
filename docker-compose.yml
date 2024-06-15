@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-    alice:
+    victim:
         build:
           context: .
           dockerfile: Dockerfile.victim
@@ -11,7 +11,7 @@ services:
         networks:
             - mitm
 
-    malcolm:
+    attacker:
         build:
           context: .
           dockerfile: Dockerfile.attacker
